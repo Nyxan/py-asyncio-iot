@@ -18,10 +18,8 @@ async def run_parallel(*functions: Awaitable[Any]) -> None:
 
 
 async def main() -> None:
-    # create an IOT service
     service = IOTService()
 
-    # create and register a few devices
     hue_light = HueLightDevice()
     speaker = SmartSpeakerDevice()
     toilet = SmartToiletDevice()
@@ -31,7 +29,6 @@ async def main() -> None:
         service.register_device(toilet),
     )
 
-    # wake_up_program logic
     await run_sequence(
         run_parallel(
             service.send_msg(Message(hue_light_id, MessageType.SWITCH_ON)),
@@ -40,7 +37,6 @@ async def main() -> None:
         service.send_msg(Message(speaker_id, MessageType.PLAY_SONG, "Rick Astley - Never Gonna Give You Up")),
     )
 
-    # sleep_program logic
     await run_sequence(
         run_parallel(
             service.send_msg(Message(hue_light_id, MessageType.SWITCH_OFF)),
